@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/jquery-3.1.0.min.js"></script>
+    <script src="lib/papaparse.min.js"></script>
+    <style>
+        body {
+            font-size: 20px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="demo-container"></div>
+<script>
+//    var dir = "data/Brisbanepublic-art-collection.csv";
+//    var dir = "data/Open-Data---AM---datasetparkfacilties.csv";
+    var dir = "data/Ferry-Terminals-JUNE-2016.csv";
+
+    $.ajax({
+        type: "GET",
+        url: dir,
+        dataType: "text",
+        success: function(data) {
+            var result = Papa.parse(data,{header: true});
+            process(result.data);
+            console.log(result.data)
+
+        }
+    });
+
+    function process(data) {
+        for (var i = 0; i < data.length; i++) {
+            addNewNode();
+            $.each(data[i], function(key, val) {
+                var content = "<b>" + key + ": </b>" + val + "<br />";
+                addHtml(content)
+            });
+            addSegment();
+        }
+    }
+
+    function addNewNode() {
+        var body = "<div class='dataNode'></div>";
+        $("div.demo-container").append(body)
+    }
+
+    function addHtml(content) {
+        $("div.dataNode:last-child").append(content);
+    }
+
+    function addSegment() {
+        var body = "<br /><hr />";
+        $("div.demo-container").append(body)
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/jquery-3.1.0.min.js"></script>
+</head>
+<body>
+<!--<div>-->
+    <!--<form>-->
+        <!--<input type="text" id="url" />-->
+        <!--<button id="submit">submit</button>-->
+    <!--</form>-->
+<!--</div>-->
+<br/>
+<br/>
+<div class="demo-container"></div>
+<script>
+
+//    var FEED_URL = "http://www.trumba.com/calendars/type.rss?filterview=festivals&filter1=_178868_&filterfield1=21859";
+    var FEED_URL = "http://www.trumba.com/calendars/audience-brisbane.rss?filterview=family&filter1=_178891_&filterfield1=21859";
+
+    $.ajax({
+        url      : document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=-1&callback=?&q=' + encodeURIComponent(FEED_URL),
+        dataType : 'json',
+        success  : function (data) {
+            var count = 0;
+            if (data.responseData.feed && data.responseData.feed.entries) {
+
+                console.log(data.responseData);
+
+                $.each(data.responseData.feed.entries, function (i, e) {
+                    content(e.content, count);
+                });
+            }
+        }
+    });
+
+
+    function content(content, i) {
+        var node = "node" + String(i);
+        $( "div.demo-container" ).append(content);
+        $( "div.demo-container" ).append("<br/><hr/>");
+
+    }
+</script>
+</body>
+</html>
